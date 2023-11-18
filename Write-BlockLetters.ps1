@@ -26,7 +26,7 @@
     This will print the text "Hello" in block letters, using "#" as the block glyph, centered, and in yellow color.
 
 .NOTES
-    Version:    1.0
+    Version:    1.1
     Author:     DPO
     Updated:    Nov. 2023
 

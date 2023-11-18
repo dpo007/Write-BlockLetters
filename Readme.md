@@ -10,6 +10,12 @@ This PowerShell script prints out block letters on the console. It takes a strin
 - `Align`: The alignment of the text. Can be "Left", "Center", or "Right". Default is "Left".
 - `ForegroundColor`: The color of the text. Default is Gray.
 
+## Example Usage
+
+```powershell
+.\Write-BlockLetters.ps1 -Text "Hello" -BlockGlyph "#" -Align "Center" -ForegroundColor "Yellow"
+```
+
 ## Example Output
 
 ```
@@ -19,8 +25,3 @@ This PowerShell script prints out block letters on the console. It takes a strin
 ▓   ▓ ▓   ▓    ▓     ▓   ▓ ▓▓ ▓▓ ▓     ▓ ▓       ▓ ▓   ▓ ▓     ▓     ▓
  ▓▓▓   ▓▓▓     ▓      ▓▓▓  ▓   ▓ ▓▓▓▓▓ ▓  ▓▓ ▓▓▓▓  ▓   ▓ ▓▓▓▓▓ ▓▓▓▓▓ ▓▓▓▓▓  ▓▓
 ```
-
-## Example
-
-```powershell
-.\Write-BlockLetters.ps1 -Text "Hello" -BlockGlyph "#" -Align "Center" -ForegroundColor "Yellow"
