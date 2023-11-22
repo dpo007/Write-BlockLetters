@@ -4,7 +4,7 @@
 
 .DESCRIPTION
     This script takes a string of text and displays it in block letters. 
-    It allows the user to specify the alignment (left, center, right) and the foreground and background colors for the text.
+    It allows the user to specify the alignment (left, center, right) and the foreground and background colors for the text. Also, the user can specify the number of blank padding lines to add to the top and bottom of the text.
 
 .PARAMETER Text
     The text to be displayed in block letters.
