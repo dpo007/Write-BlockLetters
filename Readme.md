@@ -17,10 +17,4 @@ This PowerShell script prints out block letters on the console. It takes a strin
 
 ## Example Output
 
-```
- ███   ███     ████   ███  █   █ █████ ████   ████ █   █ █████ █     █      ██
-█     █   █    █   █ █   █ █   █ █     █   █ █     █   █ █     █     █      ██
-█  ██ █   █    ████  █   █ █ █ █ ████  ████   ███  █████ ████  █     █      ██
-█   █ █   █    █     █   █ ██ ██ █     █ █       █ █   █ █     █     █
- ███   ███     █      ███  █   █ █████ █  ██ ████  █   █ █████ █████ █████  ██
-```
+!["Go PowerShell" example output](/blob/main/Write-BlockLetters.ps1)
