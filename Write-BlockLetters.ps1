@@ -401,7 +401,7 @@ $lines | ForEach-Object {
     for ($i = 0; $i -lt $line.Length; $i++) {
         $char = $line[$i]
 
-        # If the character is a space, write a space with the background color, otherwise write a space with the foreground color
+        # If the character is a space, write a space with the background color, otherwise write a space with the foreground color (to represent a lit pixel in the character).
         if ($char -eq " ") {
             Write-Host " " -NoNewline -BackgroundColor $BackgroundColor
         }
