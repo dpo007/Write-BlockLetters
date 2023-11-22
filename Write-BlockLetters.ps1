@@ -19,12 +19,15 @@
 .PARAMETER BackgroundColor
     The color of the background. Default is Black.
 
+.PARAMETER VerticalPadding
+    The number of blank lines to add to the top and bottom of the text. Default is 0.
+
 .EXAMPLE
     PS C:\> .\Write-BlockLetters.ps1 -Text "Hello!" -Align "Center" -ForegroundColor "White" -BackgroundColor "Blue"
     This will display the text "Hello!" in block letters, centered, with white text on a blue background.
 
 .NOTES
-    Version:    1.3
+    Version:    1.4
     Author:     DPO
     Updated:    Nov. 2023
 #>
@@ -34,7 +37,8 @@ param (
     [ValidateSet("Left", "Center", "Right")]
     [string]$Align = "Left",
     [ConsoleColor]$ForegroundColor = [ConsoleColor]::Gray,
-    [ConsoleColor]$BackgroundColor = [ConsoleColor]::Black
+    [ConsoleColor]$BackgroundColor = [ConsoleColor]::Black,
+    [int]$VerticalPadding = 0
 )
 
 # Define the mapping of characters to their block letter representations
@@ -447,6 +451,11 @@ $lines = for ($i = 0; $i -lt 5; $i++) {
 # Get width of the longest line (as integer)
 $longestLine = ($lines | Measure-Object -Property Length -Maximum).Maximum
 
+# Add blank vertical padding lines to the top and bottom $lines array that are as wide as the longest line.
+for ($i = 0; $i -lt $VerticalPadding; $i++) {
+    $lines = @(" " * $longestLine) + $lines + @(" " * $longestLine)
+}
+
 # Get the console width
 $consoleWidth = $Host.UI.RawUI.WindowSize.Width
 
@@ -467,6 +476,7 @@ switch ($Align) {
 # Write the lines to the console with the padding
 $lines | ForEach-Object {
     $line = $_
+
     if ($Align -eq "Center") {
         # Right padding is added so we can fill it with spaces/background colour when using centered alignment.
         $line = (" " * $leftPadding) + $line + (" " * $rightPadding)
@@ -475,17 +485,23 @@ $lines | ForEach-Object {
         $line = (" " * $leftPadding) + $line
     }
 
-    # Write the line to the console, character by character
-    for ($i = 0; $i -lt $line.Length; $i++) {
-        $char = $line[$i]
+    # If $line is empty (i.e. all spaces), write the line as a whole
+    if ($line.Trim().Length -eq 0) {
+        Write-Host $line -NoNewLine -BackgroundColor $BackgroundColor
+    }
+    else {
+        # Write the line to the console, character by character
+        for ($i = 0; $i -lt $line.Length; $i++) {
+            $char = $line[$i]
 
-        # If the character is a space, write a space with the background color, otherwise write a space with the foreground color (to represent a lit pixel in the character).
-        if ($char -eq " ") {
-            Write-Host " " -NoNewline -BackgroundColor $BackgroundColor
+            # If the character is a space, write a space with the background color, otherwise write a space with the foreground color (to represent a lit pixel in the character).
+            if ($char -eq " ") {
+                Write-Host " " -NoNewline -BackgroundColor $BackgroundColor
+            }
+            else {
+                Write-Host " " -NoNewline -BackgroundColor $ForegroundColor 
+            }        
         }
-        else {
-            Write-Host " " -NoNewline -BackgroundColor $ForegroundColor 
-        }        
     }
 
     # Add New Line to end.
