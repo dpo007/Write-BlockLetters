@@ -240,11 +240,18 @@ $blockLetters = @{
         "  #  "
     )
     '!' = @(
-        " ## ",
-        " ## ",
-        " ## ",
-        "    ",
-        " ## "
+        "##",
+        "##",
+        "##",
+        "  ",
+        "##"
+    )
+    '$' = @(
+        " ### ",
+        "# #  ",
+        " ### ",
+        "  # #",
+        " ### "
     )
     '-' = @(
         "    ",
@@ -259,6 +266,20 @@ $blockLetters = @{
         "  ",
         "  ",
         "  "
+    )
+    '<' = @(
+        "  #",
+        " # ",
+        "#  ",
+        " # ",
+        "  #"
+    )
+    '>' = @(
+        "#  ",
+        " # ",
+        "  #",
+        " # ",
+        "#  "
     )
 }
 
@@ -279,6 +300,9 @@ $lines = for ($i = 0; $i -lt 5; $i++) {
     $line -join ""
 }
 
+# Get width of the longest line (as integer)
+$longestLine = ($lines | Measure-Object -Property Length -Maximum).Maximum
+
 # Get the console width
 $consoleWidth = $Host.UI.RawUI.WindowSize.Width
 
@@ -288,10 +312,10 @@ switch ($Align) {
         $leftPadding = 0
     }
     "Center" {
-        $leftPadding = [Math]::Floor(($consoleWidth - ($Text.Length * 6)) / 2)
+        $leftPadding = [Math]::Floor(($consoleWidth - $longestLine) / 2)
     }
     "Right" {
-        $leftPadding = $consoleWidth - ($Text.Length * 6)
+        $leftPadding = $consoleWidth - $longestLine
     }
 }
 
