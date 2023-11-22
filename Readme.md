@@ -12,7 +12,7 @@ This PowerShell script prints out block letters on the console. It takes a strin
 ## Example Usage
 
 ```powershell
-.\Write-BlockLetters.ps1 -Text "Go PowerShell!" -Align "Center" -ForegroundColor "Yellow"
+.\Write-BlockLetters.ps1 -Align Center -ForegroundColor White -BackgroundColor Blue
 ```
 
 ## Example Output
