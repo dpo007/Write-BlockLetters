@@ -4,8 +4,7 @@
 
 .DESCRIPTION
     This script takes a string of text and displays it in block letters. 
-    It allows the user to specify the alignment (left, center, right) and 
-    the foreground and background colors for the text.
+    It allows the user to specify the alignment (left, center, right) and the foreground and background colors for the text.
 
 .PARAMETER Text
     The text to be displayed in block letters.
@@ -391,7 +390,7 @@ switch ($Align) {
 $lines | ForEach-Object {
     $line = $_
     if ($Align -eq "Center") {
-        # Right padding is so we can fill it with spaces/background colour when using centered alignment.
+        # Right padding is added so we can fill it with spaces/background colour when using centered alignment.
         $line = (" " * $leftPadding) + $line + (" " * $rightPadding)
     }
     else {
