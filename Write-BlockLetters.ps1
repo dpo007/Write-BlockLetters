@@ -439,7 +439,7 @@ $lines = for ($i = 0; $i -lt 5; $i++) {
             $blockLetters['?'][$i] + " "
         }
     }
-    # Join the line array into a string once and trim the last character
+    # Join the line array into a string and trim the last character
     $joinedLine = $line -join ""
     $joinedLine.Substring(0, $joinedLine.Length - 1)
 }
