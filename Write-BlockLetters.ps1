@@ -1,44 +1,41 @@
 <#
 .SYNOPSIS
-    This script prints out block letters on the console.
+    A script to write text in block letters.
 
 .DESCRIPTION
-    The script takes a string of text and prints it out in block letters on the console. 
-    The block glyph, alignment, and color can be customized.
+    This script takes a string of text and displays it in block letters. 
+    It allows the user to specify the alignment (left, center, right) and 
+    the foreground and background colors for the text.
 
 .PARAMETER Text
-    The text to be printed in block letters.
-
-.PARAMETER BlockGlyph
-    The character to be used for the block letters. Default is "▓".
-
-.PARAMETER UseCharacterAsGlyph
-    If this switch is provided, each character in the text will be used as its own glyph (overrides the BlockGlyph parameter).
+    The text to be displayed in block letters.
 
 .PARAMETER Align
-    The alignment of the text. Can be "Left", "Center", or "Right". Default is "Left".
+    The alignment of the text. Valid options are "Left", "Center", and "Right". 
+    Default is "Left".
 
 .PARAMETER ForegroundColor
     The color of the text. Default is Gray.
 
+.PARAMETER BackgroundColor
+    The color of the background. Default is Black.
+
 .EXAMPLE
-    .\Write-BlockLetters.ps1 -Text "Hello" -BlockGlyph "#" -Align "Center" -ForegroundColor "Yellow"
-    This will print the text "Hello" in block letters, using "#" as the block glyph, centered, and in yellow color.
+    PS C:\> .\Write-BlockLetters.ps1 -Text "Hello!" -Align "Center" -ForegroundColor "White" -BackgroundColor "Blue"
+    This will display the text "Hello!" in block letters, centered, with white text on a blue background.
 
 .NOTES
-    Version:    1.2
+    Version:    1.3
     Author:     DPO
     Updated:    Nov. 2023
-
 #>
 param (
     [Parameter(Mandatory = $true)]
     [string]$Text,
-    [string]$BlockGlyph = "▓",
-    [switch]$UseCharacterAsGlyph,
     [ValidateSet("Left", "Center", "Right")]
     [string]$Align = "Left",
-    [ConsoleColor]$ForegroundColor = [ConsoleColor]::Gray
+    [ConsoleColor]$ForegroundColor = [ConsoleColor]::Gray,
+    [ConsoleColor]$BackgroundColor = [ConsoleColor]::Black
 )
 
 # Define the mapping of characters to their block letter representations
@@ -225,6 +222,76 @@ $blockLetters = @{
         " #   ",
         "#####"
     )
+    '0' = @(
+        " ### ",
+        "#   #",
+        "# # #",
+        "#   #",
+        " ### "
+    )
+    '1' = @(
+        "  #  ",
+        " ##  ",
+        "  #  ",
+        "  #  ",
+        "#####"
+    )
+    '2' = @(
+        " ### ",
+        "#   #",
+        "  ## ",
+        " #   ",
+        "#####"
+    )
+    '3' = @(
+        " ### ",
+        "#   #",
+        "  ## ",
+        "#   #",
+        " ### "
+    )
+    '4' = @(
+        "#  # ",
+        "#  # ",
+        "#####",
+        "   # ",
+        "   # "
+    )
+    '5' = @(
+        "#####",
+        "#    ",
+        "#### ",
+        "    #",
+        "#### "
+    )
+    '6' = @(
+        " ### ",
+        "#    ",
+        "#### ",
+        "#   #",
+        " ### "
+    )
+    '7' = @(
+        "#####",
+        "   # ",
+        "  #  ",
+        " #   ",
+        "#    "
+    )
+    '8' = @(
+        " ### ",
+        "#   #",
+        " ### ",
+        "#   #",
+        " ### "
+    )
+    '9' = @(
+        " ### ",
+        "#   #",
+        " ####",
+        "    #",
+        " ### "
+    )
     '.' = @(
         "   ",
         "   ",
@@ -288,16 +355,16 @@ $TextUpper = $Text.ToUpper()
 $lines = for ($i = 0; $i -lt 5; $i++) {
     $line = foreach ($char in [char[]]$TextUpper) {
         $char = $char.ToString()
-        $blockLine = if ($blockLetters.ContainsKey($char)) {
+        if ($blockLetters.ContainsKey($char)) {
             $blockLetters[$char][$i] + " "
         }
         else {
             $blockLetters['?'][$i] + " "
         }
-        $glyph = if ($UseCharacterAsGlyph) { $char } else { $BlockGlyph }
-        $blockLine -replace "#", $glyph
     }
-    $line -join ""
+    # Join the line array into a string once and trim the last character
+    $joinedLine = $line -join ""
+    $joinedLine.Substring(0, $joinedLine.Length - 1)
 }
 
 # Get width of the longest line (as integer)
@@ -313,6 +380,7 @@ switch ($Align) {
     }
     "Center" {
         $leftPadding = [Math]::Floor(($consoleWidth - $longestLine) / 2)
+        $rightPadding = $consoleWidth - $longestLine - $leftPadding
     }
     "Right" {
         $leftPadding = $consoleWidth - $longestLine
@@ -322,6 +390,27 @@ switch ($Align) {
 # Write the lines to the console with the padding
 $lines | ForEach-Object {
     $line = $_
-    $line = ((" " * $leftPadding) + $line).TrimEnd()
-    Write-Host $line -ForegroundColor $ForegroundColor
+    if ($Align -eq "Center") {
+        # Right padding is so we can fill it with spaces/background colour when using centered alignment.
+        $line = (" " * $leftPadding) + $line + (" " * $rightPadding)
+    }
+    else {
+        $line = (" " * $leftPadding) + $line
+    }
+
+    # Write the line to the console, character by character
+    for ($i = 0; $i -lt $line.Length; $i++) {
+        $char = $line[$i]
+
+        # If the character is a space, write a space with the background color, otherwise write a space with the foreground color
+        if ($char -eq " ") {
+            Write-Host " " -NoNewline -BackgroundColor $BackgroundColor
+        }
+        else {
+            Write-Host " " -NoNewline -BackgroundColor $ForegroundColor 
+        }        
+    }
+
+    # Add New Line to end.
+    Write-Host
 }
