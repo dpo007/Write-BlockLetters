@@ -428,7 +428,27 @@ $blockLetters = @{
         " #",
         "# "
     )
-
+    ':' = @(
+        "   ",
+        " # ",
+        "   ",
+        " # ",
+        "   "
+    )
+    ';' = @(
+        "   ",
+        " # ",
+        "   ",
+        " # ",
+        "#  "
+    )
+    ',' = @(
+        "   ",
+        "   ",
+        "   ",
+        " # ",
+        "#  "
+    )
 }
 
 # Convert the input text to block letters and create an array of lines containing the block letters
