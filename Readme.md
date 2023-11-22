@@ -6,6 +6,7 @@ This PowerShell script prints out block letters on the console. It takes a strin
 
 - `Text`: The text to be printed in block letters.
 - `Align`: The alignment of the text. Can be "Left", "Center", or "Right". Default is "Left".
+- `VerticalPadding`: The number of blank lines to add to the top and bottom of the output. Default is 0.
 - `ForegroundColor`: The colour of the text. Default is Gray.
 - `BackgroundColor`: The background colour of the text. Default is Black.
 
