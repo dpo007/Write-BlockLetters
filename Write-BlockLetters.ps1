@@ -27,7 +27,7 @@
     This will display the text "Hello!" in block letters, centered, with white text on a blue background.
 
 .NOTES
-    Version:    1.4
+    Version:    1.5
     Author:     DPO
     Updated:    Nov. 2023
 #>
@@ -486,44 +486,57 @@ switch ($Align) {
     }
     "Center" {
         $leftPadding = [Math]::Floor(($consoleWidth - $longestLine) / 2)
+        if ($leftPadding -lt 0) {
+            $leftPadding = 0
+        }
         $rightPadding = $consoleWidth - $longestLine - $leftPadding
+        if ($rightPadding -lt 0) {
+            $rightPadding = 0
+        }
     }
     "Right" {
         $leftPadding = $consoleWidth - $longestLine
     }
 }
 
-# Write the lines to the console with the padding
-$lines | ForEach-Object {
-    $line = $_
+if ($consoleWidth -lt ($longestLine + 2)) {
+    # If the console width is less than the longest line plus 2, display a warning and write the text as is.
+    Write-Warning ('The text is too long to fit in the console window as block characters.{0}Minimum console width required: {1}{0}Current console width: {2}' -f [Environment]::NewLine, ($longestLine + 2), $consoleWidth)
+    Write-Host $Text -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
+}
+else {
+    # Write the text to the console as block characters, line by line.
+    $lines | ForEach-Object {
+        $line = $_
 
-    if ($Align -eq "Center") {
-        # Right padding is added so we can fill it with spaces/background colour when using centered alignment.
-        $line = (" " * $leftPadding) + $line + (" " * $rightPadding)
-    }
-    else {
-        $line = (" " * $leftPadding) + $line
-    }
-
-    # If $line is empty (i.e. all spaces), write the line as a whole
-    if ($line.Trim().Length -eq 0) {
-        Write-Host $line -NoNewLine -BackgroundColor $BackgroundColor
-    }
-    else {
-        # Write the line to the console, character by character
-        for ($i = 0; $i -lt $line.Length; $i++) {
-            $char = $line[$i]
-
-            # If the character is a space, write a space with the background color, otherwise write a space with the foreground color (to represent a lit pixel in the character).
-            if ($char -eq " ") {
-                Write-Host " " -NoNewline -BackgroundColor $BackgroundColor
-            }
-            else {
-                Write-Host " " -NoNewline -BackgroundColor $ForegroundColor 
-            }        
+        if ($Align -eq "Center") {
+            # Right padding is added so we can fill it with spaces/background colour when using centered alignment.
+            $line = (" " * $leftPadding) + $line + (" " * $rightPadding)
         }
-    }
+        else {
+            $line = (" " * $leftPadding) + $line
+        }
 
-    # Add New Line to end.
-    Write-Host
+        # If $line is empty (i.e. all spaces), write the line as a whole
+        if ($line.Trim().Length -eq 0) {
+            Write-Host $line -NoNewLine -BackgroundColor $BackgroundColor
+        }
+        else {
+            # Write the line to the console, character by character
+            for ($i = 0; $i -lt $line.Length; $i++) {
+                $char = $line[$i]
+
+                # If the character is a space, write a space with the background color, otherwise write a space with the foreground color (to represent a lit pixel in the character).
+                if ($char -eq " ") {
+                    Write-Host " " -NoNewline -BackgroundColor $BackgroundColor
+                }
+                else {
+                    Write-Host " " -NoNewline -BackgroundColor $ForegroundColor 
+                }        
+            }
+        }
+
+        # Add New Line to end.
+        Write-Host
+    }
 }
