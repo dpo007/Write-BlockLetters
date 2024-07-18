@@ -3,14 +3,14 @@
     A script to write text in block letters.
 
 .DESCRIPTION
-    This script takes a string of text and displays it in block letters. 
+    This script takes a string of text and displays it in block letters.
     It allows the user to specify the alignment (left, center, right) and the foreground and background colors for the text. Also, the user can specify the number of blank padding lines to add to the top and bottom of the text.
 
 .PARAMETER Text
     The text to be displayed in block letters.
 
 .PARAMETER Align
-    The alignment of the text. Valid options are "Left", "Center", and "Right". 
+    The alignment of the text. Valid options are "Left", "Center", and "Right".
     Default is "Left".
 
 .PARAMETER ForegroundColor
@@ -27,9 +27,9 @@
     This will display the text "Hello!" in block letters, centered, with white text on a blue background.
 
 .NOTES
-    Version:    1.6
+    Version:    1.7
     Author:     DPO
-    Updated:    Jan. 2024
+    Updated:    July 2024
 #>
 param (
     [Parameter(Mandatory = $true)]
@@ -377,7 +377,7 @@ $blockLetters = @{
         "#   #",
         "# ###",
         "# # #",
-        "# ### "
+        "# ###"
     )
     '#'  = @(
         " # # ",
@@ -429,25 +429,25 @@ $blockLetters = @{
         "# "
     )
     ':'  = @(
-        "   ",
-        " # ",
-        "   ",
-        " # ",
-        "   "
+        " ",
+        "#",
+        " ",
+        "#",
+        " "
     )
     ';'  = @(
-        "   ",
-        " # ",
-        "   ",
-        " # ",
-        "#  "
+        "  ",
+        " #",
+        "  ",
+        " #",
+        "# "
     )
     ','  = @(
-        "   ",
-        "   ",
-        "   ",
-        " # ",
-        "#  "
+        "  ",
+        "  ",
+        "  ",
+        " #",
+        "# "
     )
     '''' = @(
         " #",
@@ -457,11 +457,11 @@ $blockLetters = @{
         "  "
     )
     '"'  = @(
-        "# #",
-        "# #",
-        "   ",
-        "   ",
-        "   "
+        " # # ",
+        " # # ",
+        "     ",
+        "     ",
+        "     "
     )
 }
 
@@ -532,7 +532,7 @@ else {
 
         # If $line is empty (i.e. all spaces), write the line as a whole
         if ($line.Trim().Length -eq 0) {
-            Write-Host $line -NoNewLine -BackgroundColor $BackgroundColor
+            Write-Host $line -NoNewline -BackgroundColor $BackgroundColor
         }
         else {
             # Write the line to the console, character by character
@@ -544,8 +544,8 @@ else {
                     Write-Host " " -NoNewline -BackgroundColor $BackgroundColor
                 }
                 else {
-                    Write-Host " " -NoNewline -BackgroundColor $ForegroundColor 
-                }        
+                    Write-Host " " -NoNewline -BackgroundColor $ForegroundColor
+                }
             }
         }
 
